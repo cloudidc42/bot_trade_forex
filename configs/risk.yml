@@ -1,0 +1,170 @@
+# Risk Management Configuration
+# กำหนดกฎความเสี่ยงสำหรับการเทรด
+
+# ========================================
+# PORTFOLIO LEVEL RISK
+# ========================================
+portfolio:
+  # เงินทุนเริ่มต้น
+  initial_capital: 100000
+
+  # ขาดทุนสูงสุดต่อวัน (%)
+  max_daily_loss_pct: 2.0
+  max_daily_loss_absolute: 2000
+
+  # ขาดทุนสูงสุดต่อสัปดาห์ (%)
+  max_weekly_loss_pct: 5.0
+
+  # ขาดทุนสูงสุดต่อเดือน (%)
+  max_monthly_loss_pct: 10.0
+
+  # Exposure รวมสูงสุด (%)
+  max_total_exposure_pct: 40.0
+
+  # จำนวนสินทรัพย์พร้อมกันสูงสุด
+  max_concurrent_positions: 10
+
+# ========================================
+# POSITION LEVEL RISK
+# ========================================
+position:
+  # ขนาดตำแหน่งสูงสุดต่อสินทรัพย์ (% ของ capital)
+  max_position_size_pct: 5.0
+
+  # ความเสี่ยงต่อเทรด (% ของ capital)
+  risk_per_trade_pct: 1.0
+
+  # Stop Loss สูงสุด (%)
+  max_stop_loss_pct: 3.0
+
+  # Leverage สูงสุด
+  max_leverage:
+    forex: 30
+    crypto: 3
+    stocks: 1
+    commodities: 2
+
+  # Position holding time สูงสุด (วัน)
+  max_holding_days: 30
+
+# ========================================
+# ASSET CLASS LIMITS
+# ========================================
+asset_limits:
+  crypto:
+    max_exposure_pct: 15.0
+    max_positions: 3
+
+  forex:
+    max_exposure_pct: 20.0
+    max_positions: 4
+
+  stocks:
+    max_exposure_pct: 30.0
+    max_positions: 5
+
+  commodities:
+    max_exposure_pct: 15.0
+    max_positions: 3
+
+# ========================================
+# VOLATILITY-BASED SIZING
+# ========================================
+volatility:
+  # ใช้ ATR สำหรับคำนวณขนาดตำแหน่ง
+  use_atr_sizing: true
+  atr_period: 14
+  atr_multiplier: 2.0
+
+  # Target volatility (annualized %)
+  target_volatility_pct: 15.0
+
+  # ปรับขนาดตาม realized vol
+  adjust_for_realized_vol: true
+  vol_lookback_days: 30
+
+# ========================================
+# CORRELATION LIMITS
+# ========================================
+correlation:
+  # Check correlation ระหว่างสินทรัพย์
+  check_correlation: true
+  max_correlation: 0.7
+  lookback_days: 60
+
+  # หลีกเลี่ยง positions ที่ correlate สูง
+  avoid_correlated_positions: true
+
+# ========================================
+# DRAWDOWN CONTROLS
+# ========================================
+drawdown:
+  # Circuit breaker ที่ระดับ drawdown (%)
+  max_drawdown_pct: 20.0
+
+  # ลด position size เมื่อ drawdown
+  reduce_size_on_dd: true
+  dd_threshold_for_reduction: 10.0
+  size_reduction_factor: 0.5
+
+  # หยุดเทรดชั่วคราวเมื่อ drawdown มาก
+  pause_trading_on_dd: true
+  dd_threshold_for_pause: 15.0
+  pause_duration_hours: 24
+
+# ========================================
+# TIME-BASED RULES
+# ========================================
+trading_hours:
+  # กำหนดช่วงเวลาเทรด (UTC)
+  forex:
+    enabled: true
+    start_hour: 0
+    end_hour: 24
+    avoid_weekends: true
+    avoid_holidays: true
+
+  stocks:
+    enabled: true
+    start_hour: 14  # 9:30 AM EST
+    end_hour: 21    # 4:00 PM EST
+    avoid_weekends: true
+    avoid_holidays: true
+
+  crypto:
+    enabled: true
+    start_hour: 0
+    end_hour: 24
+    # Crypto trades 24/7
+
+# ========================================
+# ORDER VALIDATION
+# ========================================
+order_validation:
+  # ตรวจสอบก่อนส่ง order
+  check_balance: true
+  check_margin: true
+  check_position_limits: true
+  check_daily_loss: true
+
+  # Reject orders ที่ไม่ผ่านเกณฑ์
+  reject_invalid_orders: true
+
+  # Maximum slippage ที่ยอมรับได้ (%)
+  max_acceptable_slippage_pct: 0.5
+
+# ========================================
+# EMERGENCY CONTROLS
+# ========================================
+emergency:
+  # Kill switch - หยุดทุกอย่างทันที
+  kill_switch_enabled: false
+
+  # Auto-liquidate ทุก position
+  auto_liquidate_on_emergency: false
+
+  # Alert contacts
+  emergency_contacts:
+    telegram: true
+    email: true
+    sms: false

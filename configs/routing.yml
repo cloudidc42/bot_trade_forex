@@ -1,0 +1,147 @@
+# Routing Configuration
+# กำหนดว่าแต่ละสินทรัพย์จะใช้ Feeder/Exchange/Broker ไหน
+
+# ========================================
+# CRYPTO (Spot & Futures)
+# ========================================
+crypto:
+  # Bitcoin
+  - symbol: BTC/USDT
+    type: spot
+    exchange: binance
+    feeder: ccxt
+    min_order_size: 0.001
+    tick_size: 0.01
+    fee_maker: 0.001
+    fee_taker: 0.001
+
+  - symbol: ETH/USDT
+    type: spot
+    exchange: binance
+    feeder: ccxt
+    min_order_size: 0.01
+    tick_size: 0.01
+    fee_maker: 0.001
+    fee_taker: 0.001
+
+  # Futures (optional)
+  - symbol: BTC/USDT:USDT
+    type: future
+    exchange: binance
+    feeder: ccxt
+    min_order_size: 0.001
+    tick_size: 0.1
+    fee_maker: 0.0002
+    fee_taker: 0.0004
+    leverage: 3
+
+# ========================================
+# FOREX
+# ========================================
+forex:
+  - symbol: EURUSD
+    type: forex
+    broker: mt5
+    feeder: mt5
+    min_order_size: 0.01  # lots
+    tick_size: 0.00001
+    fee_spread: 0.00002
+    leverage: 30
+
+  - symbol: GBPUSD
+    type: forex
+    broker: mt5
+    feeder: mt5
+    min_order_size: 0.01
+    tick_size: 0.00001
+    fee_spread: 0.00003
+    leverage: 30
+
+  - symbol: USDJPY
+    type: forex
+    broker: mt5
+    feeder: mt5
+    min_order_size: 0.01
+    tick_size: 0.001
+    fee_spread: 0.002
+    leverage: 30
+
+# ========================================
+# STOCKS (US)
+# ========================================
+stocks:
+  - symbol: AAPL
+    type: stock
+    exchange: nasdaq
+    feeder: yfinance  # for backtest
+    broker: alpaca    # for live
+    min_order_size: 1
+    tick_size: 0.01
+    fee_per_trade: 0.0
+
+  - symbol: TSLA
+    type: stock
+    exchange: nasdaq
+    feeder: yfinance
+    broker: alpaca
+    min_order_size: 1
+    tick_size: 0.01
+    fee_per_trade: 0.0
+
+  - symbol: SPY
+    type: etf
+    exchange: nyse
+    feeder: yfinance
+    broker: alpaca
+    min_order_size: 1
+    tick_size: 0.01
+    fee_per_trade: 0.0
+
+# ========================================
+# COMMODITIES
+# ========================================
+commodities:
+  # Gold
+  - symbol: GLD
+    type: etf
+    name: Gold ETF
+    feeder: yfinance
+    broker: alpaca
+    min_order_size: 1
+    tick_size: 0.01
+    fee_per_trade: 0.0
+
+  # Oil
+  - symbol: USO
+    type: etf
+    name: US Oil Fund
+    feeder: yfinance
+    broker: alpaca
+    min_order_size: 1
+    tick_size: 0.01
+    fee_per_trade: 0.0
+
+  # Silver
+  - symbol: SLV
+    type: etf
+    name: Silver ETF
+    feeder: yfinance
+    broker: alpaca
+    min_order_size: 1
+    tick_size: 0.01
+    fee_per_trade: 0.0
+
+# ========================================
+# DATA TIMEFRAMES
+# ========================================
+timeframes:
+  default: 1h
+  backtest: 1d
+  live: 5m
+  available:
+    - 1m
+    - 5m
+    - 15m
+    - 1h
+    - 4h
+    - 1d
